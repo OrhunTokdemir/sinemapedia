@@ -32,55 +32,57 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="flex min-h-full flex-col font-sans">
-        <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
-          <nav className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
-            <Link href="/" className="rounded bg-brand px-2 py-0.5 text-lg font-black text-brand-fg">
-              Sinemapedia
-            </Link>
-            <div className="flex-1">
-              <Suspense fallback={<div className="input h-9" />}>
-                <SearchBox />
+        <div className="site-column mx-auto flex w-full max-w-6xl flex-1 flex-col">
+          <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
+            <nav className="flex items-center gap-4 px-4 py-3">
+              <Link href="/" className="rounded bg-brand px-2 py-0.5 text-lg font-black text-brand-fg">
+                Sinemapedia
+              </Link>
+              <div className="flex-1">
+                <Suspense fallback={<div className="input h-9" />}>
+                  <SearchBox />
+                </Suspense>
+              </div>
+              <ThemeToggle />
+              <Suspense fallback={<div className="h-8 w-24" />}>
+                <UserMenu />
               </Suspense>
-            </div>
-            <ThemeToggle />
-            <Suspense fallback={<div className="h-8 w-24" />}>
-              <UserMenu />
-            </Suspense>
-          </nav>
-        </header>
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">{children}</main>
-        <footer className="space-y-2 border-t border-border px-4 py-6 text-center text-xs text-muted">
-          <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-            <span>© {SITE.createdAt.slice(0, 4)} {SITE.name}</span>
-            <span aria-hidden>·</span>
-            <span>
-              Created by{" "}
-              <a href={SITE.authorUrl} className="font-semibold text-foreground hover:text-accent-ink" rel="author">
-                {SITE.author}
+            </nav>
+          </header>
+          <main className="w-full flex-1 px-4 py-6">{children}</main>
+          <footer className="space-y-2 border-t border-border px-4 py-6 text-center text-xs text-muted">
+            <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+              <span>© {SITE.createdAt.slice(0, 4)} {SITE.name}</span>
+              <span aria-hidden>·</span>
+              <span>
+                Created by{" "}
+                <a href={SITE.authorUrl} className="font-semibold text-foreground hover:text-accent-ink" rel="author">
+                  {SITE.author}
+                </a>
+              </span>
+              <span aria-hidden>·</span>
+              <span>
+                Since <time dateTime={SITE.createdAt}>{formatDate(SITE.createdAt)}</time>
+              </span>
+              <span aria-hidden>·</span>
+              <span>
+                Source code:{" "}
+                <a href={SITE.licenseUrl} className="hover:text-accent-ink" rel="license">
+                  {SITE.license} License
+                </a>
+              </span>
+              <span aria-hidden>·</span>
+              <Link href="/kvkk" className="hover:text-accent-ink">KVKK Aydınlatma Metni</Link>
+            </p>
+            <p>
+              Data and images from{" "}
+              <a href="https://www.themoviedb.org" className="font-semibold text-foreground underline">
+                TMDB
               </a>
-            </span>
-            <span aria-hidden>·</span>
-            <span>
-              Since <time dateTime={SITE.createdAt}>{formatDate(SITE.createdAt)}</time>
-            </span>
-            <span aria-hidden>·</span>
-            <span>
-              Source code:{" "}
-              <a href={SITE.licenseUrl} className="hover:text-accent-ink" rel="license">
-                {SITE.license} License
-              </a>
-            </span>
-            <span aria-hidden>·</span>
-            <Link href="/kvkk" className="hover:text-accent-ink">KVKK Aydınlatma Metni</Link>
-          </p>
-          <p>
-            Data and images from{" "}
-            <a href="https://www.themoviedb.org" className="font-semibold text-foreground underline">
-              TMDB
-            </a>
-            . This product uses the TMDB API but is not endorsed or certified by TMDB.
-          </p>
-        </footer>
+              . This product uses the TMDB API but is not endorsed or certified by TMDB.
+            </p>
+          </footer>
+        </div>
       </body>
     </html>
   );

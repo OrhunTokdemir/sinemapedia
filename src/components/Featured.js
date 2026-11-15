@@ -70,7 +70,7 @@ function toSlide(item, type, status, genreMap) {
 
 export function FeaturedSkeleton() {
   return (
-    <div className="card grid animate-pulse overflow-hidden p-0 md:grid-cols-[2fr_1fr]" aria-hidden>
+    <div className="card grid animate-pulse overflow-hidden md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]" aria-hidden>
       <div className="aspect-video bg-border/40" />
       <div className="space-y-3 p-5">
         <div className="h-6 w-3/4 rounded bg-border/50" />

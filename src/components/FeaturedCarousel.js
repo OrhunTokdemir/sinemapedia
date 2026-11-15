@@ -41,7 +41,7 @@ export default function FeaturedCarousel({ slides }) {
       }}
     >
       <h2 className="sr-only">Featured</h2>
-      <div className="card relative grid overflow-hidden">
+      <div className="card relative grid grid-cols-1 overflow-hidden">
         {slides.map((s, i) => {
           const active = i === index;
           return (
@@ -52,7 +52,7 @@ export default function FeaturedCarousel({ slides }) {
               aria-label={`${i + 1} of ${n}: ${s.title}`}
               aria-hidden={!active}
               inert={!active}
-              className={`[grid-area:1/1] grid transition-opacity duration-500 md:grid-cols-[2fr_1fr] ${
+              className={`[grid-area:1/1] grid min-w-0 transition-opacity duration-500 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] ${
                 active ? "opacity-100" : "pointer-events-none opacity-0"
               }`}
             >
