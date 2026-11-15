@@ -1,7 +1,7 @@
 // Site-wide facts used by the footer, metadata and the KVKK page.
 export const SITE = {
   name: "Sinemapedia",
-  author: "Orhun Tokdemir",
+  author: "OrhunTokdemir",
   authorUrl: "https://github.com/OrhunTokdemir",
   createdAt: "2026-11-14", // first commit
   license: "MIT",
