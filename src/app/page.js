@@ -2,12 +2,16 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import { PosterGrid, RatingLegend } from "@/components/PosterCard";
 import UpNext from "@/components/UpNext";
+import Featured, { FeaturedSkeleton } from "@/components/Featured";
 import Loading from "./loading";
 import { getPopular, getTrending } from "@/lib/tmdb";
 
 export default function Home() {
   return (
     <div className="space-y-10">
+      <Suspense fallback={<FeaturedSkeleton />}>
+        <Featured />
+      </Suspense>
       <Suspense fallback={null}>
         <UpNext limit={6} />
       </Suspense>

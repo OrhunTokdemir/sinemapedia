@@ -44,6 +44,36 @@ export async function getPopular(type) {
   return data?.results ?? [];
 }
 
+/**
+ * Most anticipated upcoming titles: release/first-air date within ~6 months of `fromDate`
+ * (YYYY-MM-DD, passed in so the cache key rolls over daily), sorted by popularity.
+ */
+export async function getUpcoming(type, fromDate) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(`tmdb:upcoming:${type}`);
+  const to = new Date(`${fromDate}T00:00:00Z`);
+  to.setUTCMonth(to.getUTCMonth() + 6);
+  const until = to.toISOString().slice(0, 10);
+  const dateKey = type === "movie" ? "primary_release_date" : "first_air_date";
+  const data = await tmdb(`/discover/${type}`, {
+    sort_by: "popularity.desc",
+    include_adult: false,
+    [`${dateKey}.gte`]: fromDate,
+    [`${dateKey}.lte`]: until,
+  });
+  return data?.results ?? [];
+}
+
+/** Genre id → name map for "movie" or "tv". */
+export async function getGenres(type) {
+  "use cache";
+  cacheLife("days");
+  cacheTag(`tmdb:genres:${type}`);
+  const data = await tmdb(`/genre/${type}/list`);
+  return Object.fromEntries((data?.genres ?? []).map((g) => [g.id, g.name]));
+}
+
 export async function search(query, page = 1) {
   "use cache";
   cacheLife("minutes");

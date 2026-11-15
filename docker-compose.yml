@@ -53,6 +53,7 @@ services:
       BETTER_AUTH_URL: ${BETTER_AUTH_URL:-https://localhost}
       BETTER_AUTH_SECRET_FILE: /run/secrets/better_auth_secret
       TMDB_READ_TOKEN_FILE: /run/secrets/tmdb_read_token
+      KVKK_CONTACT_EMAIL: ${KVKK_CONTACT_EMAIL:-}
     secrets: [app_db_password, better_auth_secret, tmdb_read_token]
     depends_on:
       migrate: { condition: service_completed_successfully }

@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import UserMenu from "@/components/UserMenu";
 import SearchBox from "@/components/SearchBox";
 import ThemeToggle from "@/components/ThemeToggle";
+import { SITE, formatDate } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -12,6 +13,8 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata = {
   title: { default: "Sinemapedia", template: "%s · Sinemapedia" },
   description: "Track series, rate movies, and follow what your friends watch.",
+  authors: [{ name: SITE.author, url: SITE.authorUrl }],
+  creator: SITE.author,
 };
 
 // Applies the saved theme (cookie) to <html> before first paint, so there is no flash.
@@ -46,7 +49,30 @@ export default function RootLayout({ children }) {
           </nav>
         </header>
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">{children}</main>
-        <footer className="border-t border-border py-6 text-center text-xs text-muted">
+        <footer className="space-y-2 border-t border-border px-4 py-6 text-center text-xs text-muted">
+          <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+            <span>© {SITE.createdAt.slice(0, 4)} {SITE.name}</span>
+            <span aria-hidden>·</span>
+            <span>
+              Created by{" "}
+              <a href={SITE.authorUrl} className="font-semibold text-foreground hover:text-accent-ink" rel="author">
+                {SITE.author}
+              </a>
+            </span>
+            <span aria-hidden>·</span>
+            <span>
+              Since <time dateTime={SITE.createdAt}>{formatDate(SITE.createdAt)}</time>
+            </span>
+            <span aria-hidden>·</span>
+            <span>
+              Source code:{" "}
+              <a href={SITE.licenseUrl} className="hover:text-accent-ink" rel="license">
+                {SITE.license} License
+              </a>
+            </span>
+            <span aria-hidden>·</span>
+            <Link href="/kvkk" className="hover:text-accent-ink">KVKK Aydınlatma Metni</Link>
+          </p>
           <p>
             Data and images from{" "}
             <a href="https://www.themoviedb.org" className="font-semibold text-foreground underline">

@@ -67,6 +67,12 @@ export default function AuthForm({ mode }) {
       <button className="btn-primary w-full" disabled={pending}>
         {pending ? "Please wait…" : isSignup ? "Sign up" : "Log in"}
       </button>
+      {isSignup && (
+        <p lang="tr" className="text-center text-xs text-muted">
+          Kişisel verileriniz{" "}
+          <Link href="/kvkk" className="text-accent-ink underline">KVKK Aydınlatma Metni</Link> kapsamında işlenir.
+        </p>
+      )}
       <p className="text-center text-sm text-muted">
         {isSignup ? (
           <>Already have an account? <Link href="/login" className="text-accent-ink underline">Log in</Link></>
