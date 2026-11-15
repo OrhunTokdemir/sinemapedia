@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getFollowList, getUserByUsername } from "@/lib/data";
@@ -7,7 +8,15 @@ export async function generateMetadata({ params }) {
   return { title: `@${username} · ${list}` };
 }
 
-export default async function FollowListPage({ params }) {
+export default function Page({ params }) {
+  return (
+    <Suspense fallback={<div className="card mx-auto h-40 max-w-xl animate-pulse" />}>
+      <FollowListPage params={params} />
+    </Suspense>
+  );
+}
+
+async function FollowListPage({ params }) {
   const { username, list } = await params;
   if (list !== "followers" && list !== "following") notFound();
   const profile = await getUserByUsername(decodeURIComponent(username));

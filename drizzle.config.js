@@ -12,6 +12,9 @@ export default defineConfig({
   out: "./drizzle",
   dbCredentials: { url: databaseUrl() },
   casing: "snake_case",
+  // Keep the migrations journal in `public`: the app role may create tables there,
+  // but deliberately has no CREATE privilege on the database (so no new schemas).
+  migrations: { schema: "public", table: "__drizzle_migrations" },
   strict: true,
   verbose: true,
 });

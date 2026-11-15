@@ -1,10 +1,13 @@
 import "server-only";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { getAuth } from "./auth";
 
 export async function getSession() {
-  // Read headers first: it marks this as request-time work, so prerendering never initializes auth.
+  // Session checks are always per-request (Better Auth uses the clock and crypto to validate
+  // sessions), so opt out of every prerender pass, including header-aware prefetch renders.
+  await connection();
   const h = await headers();
   return getAuth().api.getSession({ headers: h });
 }

@@ -17,12 +17,12 @@ RUN npm run build
 FROM ${NODE_IMAGE} AS migrate
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY package.json drizzle.config.js ./
+COPY package.json ./
 COPY drizzle ./drizzle
-COPY src/db/schema ./src/db/schema
+COPY scripts/migrate.mjs ./scripts/migrate.mjs
 COPY src/lib/secrets.js ./src/lib/secrets.js
 USER node
-CMD ["npx", "drizzle-kit", "migrate"]
+CMD ["node", "scripts/migrate.mjs"]
 
 FROM ${NODE_IMAGE} AS runner
 WORKDIR /app

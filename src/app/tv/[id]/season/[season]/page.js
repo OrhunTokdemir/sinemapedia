@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
+import Loading from "@/app/loading";
 import { EpisodeToggle, SeasonToggle } from "@/components/EpisodeToggle";
 import { getWatchedSet } from "@/lib/data";
 import { intParam } from "@/lib/params";
@@ -14,7 +16,15 @@ export async function generateMetadata({ params }) {
   return { title: show ? `${show.name}: Season ${p.season}` : "Season" };
 }
 
-export default async function SeasonPage({ params }) {
+export default function Page({ params }) {
+  return (
+    <Suspense fallback={<Loading />}>
+      <SeasonPage params={params} />
+    </Suspense>
+  );
+}
+
+async function SeasonPage({ params }) {
   const p = await params;
   const id = intParam(p.id);
   const seasonNo = intParam(p.season, { min: 0 });
@@ -29,7 +39,7 @@ export default async function SeasonPage({ params }) {
       <h1 className="mb-1 text-2xl font-bold">{season.name}</h1>
       {season.overview && <p className="mb-4 max-w-3xl text-muted">{season.overview}</p>}
 
-      <Suspense fallback={<EpisodeList id={id} season={season} watched={null} />}>
+      <Suspense fallback={<div className="card h-40 animate-pulse" />}>
         <WatchedEpisodes id={id} season={season} />
       </Suspense>
     </div>
@@ -37,6 +47,7 @@ export default async function SeasonPage({ params }) {
 }
 
 async function WatchedEpisodes({ id, season }) {
+  await connection(); // "aired" depends on today's date, so render at request time
   const user = await getUser();
   const watched = user ? await getWatchedSet(user.id, id) : null;
   return <EpisodeList id={id} season={season} watched={watched} />;

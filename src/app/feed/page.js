@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import ActivityList from "@/components/ActivityList";
 import { getFeed } from "@/lib/data";
@@ -5,7 +6,15 @@ import { requireUser } from "@/lib/session";
 
 export const metadata = { title: "Feed" };
 
-export default async function FeedPage({ searchParams }) {
+export default function Page({ searchParams }) {
+  return (
+    <Suspense fallback={<div className="card mx-auto h-40 max-w-2xl animate-pulse" />}>
+      <FeedPage searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+async function FeedPage({ searchParams }) {
   const user = await requireUser();
   const { before } = await searchParams;
   const cursor = Number(before) || undefined;

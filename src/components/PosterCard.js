@@ -3,7 +3,7 @@ import Link from "next/link";
 import { img } from "@/lib/tmdb";
 
 /** Card for a TMDB movie/tv/person result. Works with raw TMDB objects. */
-export default function PosterCard({ item, type, subtitle }) {
+export default function PosterCard({ item, type, subtitle, eager = false }) {
   const kind = type ?? item.media_type;
   const title = item.title ?? item.name;
   const path = kind === "person" ? item.profile_path : item.poster_path;
@@ -18,6 +18,7 @@ export default function PosterCard({ item, type, subtitle }) {
             alt={title}
             fill
             sizes="(max-width: 640px) 33vw, 180px"
+            loading={eager ? "eager" : "lazy"}
             className="object-cover transition group-hover:scale-105"
           />
         ) : (
@@ -35,11 +36,16 @@ export default function PosterCard({ item, type, subtitle }) {
   );
 }
 
-export function PosterGrid({ items, type }) {
+export function PosterGrid({ items, type, eager = false }) {
   return (
     <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6">
-      {items.map((item) => (
-        <PosterCard key={`${type ?? item.media_type}-${item.id}`} item={item} type={type} />
+      {items.map((item, i) => (
+        <PosterCard
+          key={`${type ?? item.media_type}-${item.id}`}
+          item={item}
+          type={type}
+          eager={eager && i < 6}
+        />
       ))}
     </div>
   );

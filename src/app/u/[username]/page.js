@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -11,7 +12,15 @@ export async function generateMetadata({ params }) {
   return { title: `@${(await params).username}` };
 }
 
-export default async function ProfilePage({ params }) {
+export default function Page({ params }) {
+  return (
+    <Suspense fallback={<div className="card h-40 animate-pulse" />}>
+      <ProfilePage params={params} />
+    </Suspense>
+  );
+}
+
+async function ProfilePage({ params }) {
   const { username } = await params;
   const profile = await getUserByUsername(decodeURIComponent(username));
   if (!profile) notFound();

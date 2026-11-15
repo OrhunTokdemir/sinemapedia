@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Loading from "@/app/loading";
 import CommentSection from "@/components/CommentSection";
 import { PosterGrid } from "@/components/PosterCard";
 import TitleHero, { CastRow, PanelSkeleton } from "@/components/TitleHero";
@@ -14,7 +15,15 @@ export async function generateMetadata({ params }) {
   return { title: show?.name ?? "Series" };
 }
 
-export default async function ShowPage({ params }) {
+export default function Page({ params }) {
+  return (
+    <Suspense fallback={<Loading />}>
+      <ShowPage params={params} />
+    </Suspense>
+  );
+}
+
+async function ShowPage({ params }) {
   const id = intParam((await params).id);
   const show = await getShow(id);
   if (!show) notFound();

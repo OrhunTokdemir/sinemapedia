@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import Image from "next/image";
+import Loading from "@/app/loading";
 import { notFound } from "next/navigation";
 import { PosterGrid } from "@/components/PosterCard";
 import { intParam } from "@/lib/params";
@@ -9,7 +11,15 @@ export async function generateMetadata({ params }) {
   return { title: person?.name ?? "Person" };
 }
 
-export default async function PersonPage({ params }) {
+export default function Page({ params }) {
+  return (
+    <Suspense fallback={<Loading />}>
+      <PersonPage params={params} />
+    </Suspense>
+  );
+}
+
+async function PersonPage({ params }) {
   const person = await getPerson(intParam((await params).id));
   if (!person) notFound();
 
@@ -25,7 +35,7 @@ export default async function PersonPage({ params }) {
       <div className="flex flex-col gap-6 sm:flex-row">
         <div className="relative aspect-[2/3] w-40 shrink-0 overflow-hidden rounded-lg border border-border bg-surface sm:w-52">
           {person.profile_path && (
-            <Image src={img(person.profile_path, "w500")} alt={person.name} fill sizes="208px" className="object-cover" priority />
+            <Image src={img(person.profile_path, "w500")} alt={person.name} fill sizes="208px" className="object-cover" loading="eager" />
           )}
         </div>
         <div className="space-y-3">

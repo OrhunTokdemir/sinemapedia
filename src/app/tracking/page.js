@@ -17,7 +17,15 @@ const GROUPS = [
   ["dropped", "Dropped"],
 ];
 
-export default async function TrackingPage() {
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="card h-40 animate-pulse" />}>
+      <TrackingPage />
+    </Suspense>
+  );
+}
+
+async function TrackingPage() {
   const user = await requireUser();
   const rows = await getTracking(user.id);
   const withProgress = await Promise.all(

@@ -1,9 +1,18 @@
+import { Suspense } from "react";
 import { requireUser } from "@/lib/session";
 import SettingsForm from "@/components/SettingsForm";
 
 export const metadata = { title: "Settings" };
 
-export default async function SettingsPage() {
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="card mx-auto h-60 max-w-lg animate-pulse" />}>
+      <SettingsPage />
+    </Suspense>
+  );
+}
+
+async function SettingsPage() {
   const user = await requireUser();
   return (
     <div className="mx-auto max-w-lg">

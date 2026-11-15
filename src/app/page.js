@@ -26,7 +26,7 @@ async function Discover() {
     <>
       <section>
         <h2 className="h-section">Trending this week</h2>
-        <PosterGrid items={trending.filter((t) => t.media_type !== "person").slice(0, 18)} />
+        <PosterGrid items={trending.filter((t) => t.media_type !== "person").slice(0, 18)} eager />
       </section>
       <section>
         <h2 className="h-section">Popular series</h2>

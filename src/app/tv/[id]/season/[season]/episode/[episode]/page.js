@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
+import Loading from "@/app/loading";
 import CommentSection from "@/components/CommentSection";
 import { EpisodeToggle } from "@/components/EpisodeToggle";
 import { CastRow, PanelSkeleton } from "@/components/TitleHero";
@@ -17,7 +19,15 @@ export async function generateMetadata({ params }) {
   return { title: ep?.name ?? "Episode" };
 }
 
-export default async function EpisodePage({ params }) {
+export default function Page({ params }) {
+  return (
+    <Suspense fallback={<Loading />}>
+      <EpisodePage params={params} />
+    </Suspense>
+  );
+}
+
+async function EpisodePage({ params }) {
   const p = await params;
   const id = intParam(p.id);
   const season = intParam(p.season, { min: 0 });
@@ -35,7 +45,7 @@ export default async function EpisodePage({ params }) {
       <div className="mt-2 flex flex-col gap-6 md:flex-row">
         {ep.still_path && (
           <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-lg md:w-96">
-            <Image src={img(ep.still_path, "w780")} alt="" fill sizes="384px" className="object-cover" priority />
+            <Image src={img(ep.still_path, "w780")} alt="" fill sizes="384px" className="object-cover" loading="eager" />
           </div>
         )}
         <div className="flex-1 space-y-3">
@@ -67,6 +77,7 @@ export default async function EpisodePage({ params }) {
 }
 
 async function WatchedToggle({ id, season, episode, airDate }) {
+  await connection(); // "aired" depends on today's date, so render at request time
   const user = await getUser();
   if (!user) return null;
   const watched = (await getWatchedSet(user.id, id)).has(`${season}:${episode}`);

@@ -16,11 +16,11 @@ export default function TitleHero({ data, type, children }) {
   return (
     <section className="relative -mx-4 -mt-6 overflow-hidden px-4 pb-6 pt-8">
       {backdrop && (
-        <Image src={backdrop} alt="" fill priority sizes="100vw" className="-z-10 object-cover opacity-15" />
+        <Image src={backdrop} alt="" fill loading="eager" sizes="100vw" className="-z-10 object-cover opacity-15" />
       )}
       <div className="flex flex-col gap-6 sm:flex-row">
         <div className="relative aspect-[2/3] w-40 shrink-0 overflow-hidden rounded-lg border border-border bg-surface sm:w-56">
-          {poster && <Image src={poster} alt={title} fill sizes="224px" className="object-cover" priority />}
+          {poster && <Image src={poster} alt={title} fill sizes="224px" className="object-cover" loading="eager" />}
         </div>
         <div className="min-w-0 flex-1 space-y-3">
           <h1 className="text-3xl font-bold">

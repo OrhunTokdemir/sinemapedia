@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import Loading from "@/app/loading";
 import CommentSection from "@/components/CommentSection";
 import { PosterGrid } from "@/components/PosterCard";
 import TitleHero, { CastRow, PanelSkeleton } from "@/components/TitleHero";
@@ -12,7 +13,15 @@ export async function generateMetadata({ params }) {
   return { title: movie?.title ?? "Movie" };
 }
 
-export default async function MoviePage({ params }) {
+export default function Page({ params }) {
+  return (
+    <Suspense fallback={<Loading />}>
+      <MoviePage params={params} />
+    </Suspense>
+  );
+}
+
+async function MoviePage({ params }) {
   const id = intParam((await params).id);
   const movie = await getMovie(id);
   if (!movie) notFound();
