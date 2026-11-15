@@ -36,8 +36,13 @@ async function MoviePage({ params }) {
       <CastRow cast={movie.credits?.cast} />
       {movie.recommendations?.results?.length > 0 && (
         <section className="mt-8">
-          <h2 className="h-section">More like this</h2>
-          <PosterGrid items={movie.recommendations.results.slice(0, 6)} type="movie" />
+          <PosterGrid
+            items={movie.recommendations.results}
+            type="movie"
+            rows={2}
+            label="More like this"
+            heading={<h2 className="h-section">More like this</h2>}
+          />
         </section>
       )}
       <Suspense fallback={null}>

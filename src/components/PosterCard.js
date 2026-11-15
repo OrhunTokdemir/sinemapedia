@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { connection } from "next/server";
 import { getCommunityScores } from "@/lib/data";
 import { img } from "@/lib/tmdb";
 import ClapperIcon from "./ClapperIcon";
+import PosterRail from "./PosterRail";
 
 /**
  * Card for a TMDB movie/tv/person result. Works with raw TMDB objects.
@@ -64,15 +66,24 @@ export function RatingLegend() {
   );
 }
 
-/** Poster grid; loads Sinemapedia averages for all items in one query. Render at request time. */
-export async function PosterGrid({ items, type, eager = false }) {
+/**
+ * Poster grid; loads Sinemapedia averages for all items in one query. Render at request time.
+ * With `rows`, shows at most that many rows and the rest in a horizontal slider with arrows.
+ */
+export async function PosterGrid({ items, type, eager = false, rows, label, heading }) {
+  // DB read (per-request data): mark as dynamic first, so prerendering never opens a DB connection.
+  await connection();
   const scores = await getCommunityScores(items, type);
-  return (
-    <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6">
-      {items.map((item, i) => {
-        const key = `${type ?? item.media_type}-${item.id}`;
-        return <PosterCard key={key} item={item} type={type} eager={eager && i < 6} spScore={scores.get(key)} />;
-      })}
-    </div>
-  );
+  const cards = items.map((item, i) => {
+    const key = `${type ?? item.media_type}-${item.id}`;
+    return <PosterCard key={key} item={item} type={type} eager={eager && i < 6} spScore={scores.get(key)} />;
+  });
+  if (rows) {
+    return (
+      <PosterRail rows={rows} label={label} heading={heading}>
+        {cards}
+      </PosterRail>
+    );
+  }
+  return <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6">{cards}</div>;
 }

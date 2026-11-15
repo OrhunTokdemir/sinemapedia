@@ -34,16 +34,21 @@ export default function RootLayout({ children }) {
       </head>
       <body className="flex min-h-full flex-col font-sans">
         <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
-          <nav className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
-            <Logo />
-            <div className="min-w-0 flex-1">
+          {/* Full width: logo at the left edge, search centered on screen, account at the right edge. */}
+          <nav className="flex h-16 items-center gap-3 px-4 sm:gap-4 sm:px-6 md:grid md:grid-cols-[1fr_minmax(0,42rem)_1fr] md:gap-6 lg:px-8">
+            <div className="shrink-0 md:justify-self-start">
+              <Logo />
+            </div>
+            <div className="min-w-0 flex-1 md:w-full">
               <Suspense fallback={<div className="input h-9" />}>
                 <SearchBox />
               </Suspense>
             </div>
-            <Suspense fallback={<div className="h-9 w-9 shrink-0 rounded-full bg-surface" />}>
-              <UserMenu />
-            </Suspense>
+            <div className="shrink-0 md:justify-self-end">
+              <Suspense fallback={<div className="h-9 w-9 rounded-full bg-surface" />}>
+                <UserMenu />
+              </Suspense>
+            </div>
           </nav>
         </header>
         <div className="site-column mx-auto flex w-full max-w-6xl flex-1 flex-col">

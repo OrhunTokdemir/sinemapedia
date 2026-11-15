@@ -70,8 +70,13 @@ async function ShowPage({ params }) {
       <CastRow cast={show.credits?.cast} />
       {show.recommendations?.results?.length > 0 && (
         <section className="mt-8">
-          <h2 className="h-section">More like this</h2>
-          <PosterGrid items={show.recommendations.results.slice(0, 6)} type="tv" />
+          <PosterGrid
+            items={show.recommendations.results}
+            type="tv"
+            rows={2}
+            label="More like this"
+            heading={<h2 className="h-section">More like this</h2>}
+          />
         </section>
       )}
       <Suspense fallback={null}>

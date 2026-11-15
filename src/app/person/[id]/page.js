@@ -49,8 +49,7 @@ async function PersonPage({ params }) {
         </div>
       </div>
       <section className="mt-8">
-        <h2 className="h-section">Known for</h2>
-        <PosterGrid items={credits} />
+        <PosterGrid items={credits} rows={2} label="Known for" heading={<h2 className="h-section">Known for</h2>} />
       </section>
     </div>
   );

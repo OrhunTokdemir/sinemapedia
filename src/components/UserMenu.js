@@ -16,7 +16,7 @@ export default async function UserMenu() {
     );
   }
   return (
-    <div className="flex shrink-0 items-center gap-4 text-sm">
+    <div className="flex shrink-0 items-center gap-5 text-sm">
       <Link href="/feed" className="hidden font-medium text-muted hover:text-foreground md:block">Feed</Link>
       <Link href="/tracking" className="hidden font-medium text-muted hover:text-foreground md:block">Tracking</Link>
       <AccountMenu user={{ name: user.name, username: user.username, image: avatarSrc(user) }} />
