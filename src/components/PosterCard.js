@@ -25,7 +25,7 @@ export default function PosterCard({ item, type, subtitle, eager = false }) {
           <div className="flex h-full items-center justify-center p-2 text-center text-xs text-muted">{title}</div>
         )}
         {item.vote_average > 0 && (
-          <span className="absolute left-1 top-1 rounded bg-black/70 px-1.5 text-xs font-semibold text-accent">
+          <span className="absolute left-1 top-1 rounded bg-black/70 px-1.5 text-xs font-semibold text-star">
             ★ {item.vote_average.toFixed(1)}
           </span>
         )}

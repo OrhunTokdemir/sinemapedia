@@ -55,14 +55,13 @@ async function EpisodePage({ params }) {
           <p className="text-sm text-muted">
             {ep.air_date ?? "TBA"}
             {ep.runtime ? ` · ${ep.runtime} min` : ""}
-            {ep.vote_average > 0 ? ` · ★ ${ep.vote_average.toFixed(1)} TMDB` : ""}
           </p>
           <p className="leading-relaxed">{ep.overview}</p>
           <Suspense fallback={<PanelSkeleton />}>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="space-y-3">
               <WatchedToggle id={id} season={season} episode={episode} airDate={ep.air_date} />
-              <div className="flex-1">
-                <TitlePanel tmdbId={id} type="tv" season={season} episode={episode} />
+              <div>
+                <TitlePanel tmdbId={id} type="tv" season={season} episode={episode} tmdbScore={ep.vote_average} tmdbVotes={ep.vote_count} />
               </div>
             </div>
           </Suspense>

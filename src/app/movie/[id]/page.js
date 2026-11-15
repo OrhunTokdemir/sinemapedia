@@ -30,7 +30,7 @@ async function MoviePage({ params }) {
     <>
       <TitleHero data={movie} type="movie">
         <Suspense fallback={<PanelSkeleton />}>
-          <TitlePanel tmdbId={id} type="movie" />
+          <TitlePanel tmdbId={id} type="movie" tmdbScore={movie.vote_average} tmdbVotes={movie.vote_count} />
         </Suspense>
       </TitleHero>
       <CastRow cast={movie.credits?.cast} />

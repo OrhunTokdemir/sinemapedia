@@ -28,7 +28,7 @@ export default function RatingStars({ tmdbId, type, season = 0, episode = 0, sco
             aria-label={`${v} out of 10`}
             onMouseEnter={() => setHover(v)}
             onClick={() => submit(v)}
-            className={`px-0.5 text-xl leading-none ${v <= shown ? "text-accent" : "text-border"}`}
+            className={`px-0.5 text-xl leading-none ${v <= shown ? "text-star" : "text-border"}`}
           >
             ★
           </button>

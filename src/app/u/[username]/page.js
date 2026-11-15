@@ -98,7 +98,7 @@ function MediaList({ title, items }) {
                     <Image src={img(media.posterPath, "w154")} alt={media.title} fill sizes="80px" className="object-cover" />
                   )}
                   {score && (
-                    <span className="absolute bottom-0 left-0 right-0 bg-black/70 text-center text-xs font-semibold text-accent">
+                    <span className="absolute bottom-0 left-0 right-0 bg-black/70 text-center text-xs font-semibold text-star">
                       ★ {score}
                     </span>
                   )}

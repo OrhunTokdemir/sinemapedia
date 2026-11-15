@@ -15,7 +15,7 @@ function describe(a) {
   const p = a.payload ?? {};
   switch (a.type) {
     case "rated":
-      return <>rated {p.season ? `${ep(p)} of ` : ""}<Title a={a} /> <b className="text-accent">★ {p.score}</b></>;
+      return <>rated {p.season ? `${ep(p)} of ` : ""}<Title a={a} /> <b className="text-star">★ {p.score}</b></>;
     case "commented":
       return <>commented on {p.season ? `${ep(p)} of ` : ""}<Title a={a} /></>;
     case "watched_episode":

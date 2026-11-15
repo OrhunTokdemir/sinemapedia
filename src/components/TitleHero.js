@@ -36,12 +36,6 @@ export default function TitleHero({ data, type, children }) {
               .filter(Boolean)
               .join(" · ")}
           </p>
-          {data.vote_average > 0 && (
-            <p className="text-sm">
-              <span className="text-accent">★</span> {data.vote_average.toFixed(1)}
-              <span className="text-muted"> TMDB ({data.vote_count.toLocaleString()} votes)</span>
-            </p>
-          )}
           {data.tagline && <p className="italic text-muted">{data.tagline}</p>}
           <p className="max-w-3xl leading-relaxed">{data.overview}</p>
           {directors?.length > 0 && (
@@ -85,5 +79,5 @@ export function CastRow({ cast }) {
 }
 
 export function PanelSkeleton() {
-  return <div className="card h-[74px] animate-pulse" />;
+  return <div className="card h-[150px] w-72 max-w-full animate-pulse" />;
 }

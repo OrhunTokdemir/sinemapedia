@@ -32,32 +32,36 @@ async function ShowPage({ params }) {
     <>
       <TitleHero data={show} type="tv">
         <Suspense fallback={<PanelSkeleton />}>
-          <TitlePanel tmdbId={id} type="tv" />
+          <TitlePanel tmdbId={id} type="tv" tmdbScore={show.vote_average} tmdbVotes={show.vote_count} />
         </Suspense>
       </TitleHero>
 
       <section className="mt-8">
         <h2 className="h-section">Seasons</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+        <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6">
           {show.seasons
             .filter((s) => s.episode_count > 0)
             .map((s) => (
-              <Link
-                key={s.id}
-                href={`/tv/${id}/season/${s.season_number}`}
-                className="card flex gap-3 p-2 hover:border-accent"
-              >
-                <div className="relative aspect-[2/3] w-12 shrink-0 overflow-hidden rounded bg-background">
-                  {s.poster_path && (
-                    <Image src={img(s.poster_path, "w92")} alt="" fill sizes="48px" className="object-cover" />
+              <Link key={s.id} href={`/tv/${id}/season/${s.season_number}`} className="group block">
+                <div className="relative aspect-[2/3] overflow-hidden rounded-lg border border-border bg-surface">
+                  {s.poster_path ? (
+                    <Image
+                      src={img(s.poster_path, "w342")}
+                      alt={s.name}
+                      fill
+                      sizes="(max-width: 640px) 33vw, 180px"
+                      className="object-cover transition group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center p-2 text-center text-xs text-muted">
+                      {s.name}
+                    </div>
                   )}
                 </div>
-                <div className="min-w-0 text-sm">
-                  <p className="font-medium">{s.name}</p>
-                  <p className="text-xs text-muted">
-                    {s.episode_count} episodes{s.air_date && ` · ${s.air_date.slice(0, 4)}`}
-                  </p>
-                </div>
+                <p className="mt-1.5 line-clamp-1 text-sm font-medium group-hover:text-accent">{s.name}</p>
+                <p className="text-xs text-muted">
+                  {s.episode_count} episodes{s.air_date && ` · ${s.air_date.slice(0, 4)}`}
+                </p>
               </Link>
             ))}
         </div>
