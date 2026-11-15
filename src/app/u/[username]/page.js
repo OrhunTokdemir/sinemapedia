@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ActivityList from "@/components/ActivityList";
+import Avatar from "@/components/Avatar";
 import ClapperIcon from "@/components/ClapperIcon";
 import FollowButton from "@/components/FollowButton";
 import { getFollowStats, getTracking, getUserActivity, getUserByUsername, getUserRatings } from "@/lib/data";
@@ -39,14 +40,7 @@ async function ProfilePage({ params }) {
     <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
       <div className="space-y-8">
         <header className="flex items-start gap-4">
-          <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-accent text-3xl font-bold text-accent-fg">
-            {profile.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={profile.image} alt="" className="h-full w-full object-cover" />
-            ) : (
-              profile.name[0]?.toUpperCase()
-            )}
-          </div>
+          <Avatar user={profile} size={80} className="ring-2 ring-border" />
           <div className="flex-1 space-y-1">
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-2xl font-bold">{profile.name}</h1>

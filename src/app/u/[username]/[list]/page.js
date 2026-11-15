@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getFollowList, getUserByUsername } from "@/lib/data";
+import Avatar from "@/components/Avatar";
 
 export async function generateMetadata({ params }) {
   const { username, list } = await params;
@@ -36,9 +37,7 @@ async function FollowListPage({ params }) {
           {users.map((u) => (
             <li key={u.id}>
               <Link href={`/u/${u.username}`} className="card flex items-center gap-3 p-3 hover:border-accent">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent font-bold text-accent-fg">
-                  {u.name[0]?.toUpperCase()}
-                </span>
+                <Avatar user={u} size={36} />
                 <span>
                   <span className="font-medium">{u.name}</span>{" "}
                   <span className="text-sm text-muted">@{u.username}</span>

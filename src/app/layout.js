@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Bebas_Neue, Geist, Geist_Mono } from "next/font/google";
 import UserMenu from "@/components/UserMenu";
 import SearchBox from "@/components/SearchBox";
-import ThemeToggle from "@/components/ThemeToggle";
 import Logo from "@/components/Logo";
 import { SITE, formatDate } from "@/lib/site";
 import "./globals.css";
@@ -37,13 +36,12 @@ export default function RootLayout({ children }) {
         <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
           <nav className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
             <Logo />
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <Suspense fallback={<div className="input h-9" />}>
                 <SearchBox />
               </Suspense>
             </div>
-            <ThemeToggle />
-            <Suspense fallback={<div className="h-8 w-24" />}>
+            <Suspense fallback={<div className="h-9 w-9 shrink-0 rounded-full bg-surface" />}>
               <UserMenu />
             </Suspense>
           </nav>
