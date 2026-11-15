@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import UserMenu from "@/components/UserMenu";
 import SearchBox from "@/components/SearchBox";
 import ThemeToggle from "@/components/ThemeToggle";
+import Logo from "@/components/Logo";
 import { SITE, formatDate } from "@/lib/site";
 import "./globals.css";
 
@@ -34,9 +35,7 @@ export default function RootLayout({ children }) {
       <body className="flex min-h-full flex-col font-sans">
         <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
           <nav className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
-            <Link href="/" className="rounded bg-brand px-2 py-0.5 text-lg font-black text-brand-fg">
-              Sinemapedia
-            </Link>
+            <Logo />
             <div className="flex-1">
               <Suspense fallback={<div className="input h-9" />}>
                 <SearchBox />
