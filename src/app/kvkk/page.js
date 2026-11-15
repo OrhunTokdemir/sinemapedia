@@ -70,6 +70,12 @@ function KvkkTr() {
             eden kullanıcılar, izleme listeniz, izlediğiniz bölümler ve bunlardan oluşan etkinlik akışı kayıtları.
           </li>
           <li>
+            <b>Güvenlik ve hata kayıtları:</b> sunucu kayıtlarında (log) kullanıcı kimlik numaranız, oturum açma ve kayıt
+            olaylarının sonucu, yaptığınız işlemlerin türü (ör. puan verme, yorum ekleme, takip) ile{" "}
+            <b>son bölümü maskelenmiş IP adresi</b> tutulur. Şifre, e-posta adresi, yorum metni ve arama terimleri bu
+            kayıtlara yazılmaz.
+          </li>
+          <li>
             <b>Çerezler:</b> oturumunuzu açık tutmak için zorunlu bir oturum çerezi ve tercih ettiğiniz renk temasını
             hatırlayan bir tema çerezi. Reklam, analiz veya takip amaçlı çerez kullanılmaz.
           </li>
@@ -89,7 +95,7 @@ function KvkkTr() {
         <ul className="list-disc space-y-1.5 pl-5">
           <li>Üyelik hesabınızın oluşturulması, oturum açmanız ve hesabınızın yönetilmesi,</li>
           <li>Dizi takibi, puanlama, yorum, beğeni ve takip özelliklerinin sunulması,</li>
-          <li>Hesap ve Site güvenliğinin sağlanması, kötüye kullanımın önlenmesi.</li>
+          <li>Hesap ve Site güvenliğinin sağlanması, kötüye kullanımın önlenmesi, hataların tespiti ve giderilmesi.</li>
         </ul>
       </Section>
 
@@ -112,7 +118,7 @@ function KvkkTr() {
         <p>
           Kişisel verileriniz hesabınız açık kaldığı sürece saklanır ve hesabınızın silinmesini talep etmeniz halinde
           silinir. Oturum kayıtları (IP adresi ve tarayıcı bilgisi) oturumun sona ermesiyle, en geç 7 gün içinde geçerliliğini
-          yitirir.
+          yitirir. Güvenlik ve hata kayıtları en fazla 30 gün saklanır ve ardından silinir.
         </p>
       </Section>
 
@@ -190,6 +196,11 @@ function KvkkEn() {
             watchlist, the episodes you have watched, and the activity feed records created from these.
           </li>
           <li>
+            <b>Security and error logs:</b> server logs record your user ID, the outcome of sign-up and log-in events, the
+            type of actions you take (e.g. rating, commenting, following) and your <b>IP address with its last part
+            masked</b>. Passwords, email addresses, comment text and search terms are never written to these logs.
+          </li>
+          <li>
             <b>Cookies:</b> a required session cookie that keeps you logged in, and a theme cookie that remembers your
             preferred color theme. No advertising, analytics or tracking cookies are used.
           </li>
@@ -209,7 +220,7 @@ function KvkkEn() {
         <ul className="list-disc space-y-1.5 pl-5">
           <li>Creating your account, letting you log in, and managing your account;</li>
           <li>Providing series tracking, rating, commenting, liking and following features;</li>
-          <li>Keeping your account and the Site secure, and preventing misuse.</li>
+          <li>Keeping your account and the Site secure, preventing misuse, and detecting and fixing errors.</li>
         </ul>
       </Section>
 
@@ -232,7 +243,7 @@ function KvkkEn() {
         <p>
           Your personal data is kept for as long as your account remains open and is deleted if you request deletion of
           your account. Session records (IP address and browser information) expire when the session ends, within 7 days at
-          the latest.
+          the latest. Security and error logs are kept for at most 30 days and then deleted.
         </p>
       </Section>
 

@@ -1,6 +1,11 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { requireSecret } from "./secrets";
+import { log } from "./logger";
+
+const tmdbLog = log.child("tmdb");
+const TIMEOUT_MS = 10_000;
+const SLOW_MS = 2_000;
 
 const BASE = "https://api.themoviedb.org/3";
 
@@ -9,14 +14,35 @@ async function tmdb(path, params = {}) {
   for (const [k, v] of Object.entries(params)) {
     if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, String(v));
   }
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${requireSecret("TMDB_READ_TOKEN")}`,
-      Accept: "application/json",
-    },
-  });
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error(`TMDB ${res.status} for ${path}`);
+  // Only called inside 'use cache' functions, so this runs (and logs) on cache misses only.
+  const started = performance.now();
+  let res;
+  try {
+    res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${requireSecret("TMDB_READ_TOKEN")}`,
+        Accept: "application/json",
+      },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+  } catch (err) {
+    const timedOut = err?.name === "TimeoutError";
+    tmdbLog.error(timedOut ? "tmdb.timeout" : "tmdb.network_error", { path, error: timedOut ? undefined : err });
+    throw new Error(timedOut ? `TMDB timeout for ${path}` : `TMDB request failed for ${path}`, { cause: err });
+  }
+  const durationMs = Math.round(performance.now() - started);
+  if (res.status === 404) {
+    tmdbLog.debug("tmdb.not_found", { path, durationMs });
+    return null;
+  }
+  if (!res.ok) {
+    const fields = { path, status: res.status, durationMs, retryAfter: res.headers.get("retry-after") ?? undefined };
+    if (res.status === 429) tmdbLog.warn("tmdb.rate_limited", fields);
+    else tmdbLog.error("tmdb.error", fields);
+    throw new Error(`TMDB ${res.status} for ${path}`);
+  }
+  if (durationMs > SLOW_MS) tmdbLog.warn("tmdb.slow", { path, durationMs });
+  else tmdbLog.debug("tmdb.ok", { path, durationMs });
   return res.json();
 }
 

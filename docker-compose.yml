@@ -12,8 +12,16 @@ x-db-conn: &db-conn
   DB_USER: ${APP_DB_USER:-sinemapedia}
   DB_PASSWORD_FILE: /run/secrets/app_db_password
 
+# Rotate container logs (stdout JSON) so they can't fill the disk: 5 × 10 MB per service.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
 services:
   db:
+    logging: *logging
     image: postgres:17-alpine@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065
     restart: unless-stopped
     environment:
@@ -36,6 +44,7 @@ services:
       retries: 10
 
   migrate:
+    logging: *logging
     profiles: ["prod"]
     build: { context: ., target: migrate }
     environment:
@@ -45,6 +54,7 @@ services:
       db: { condition: service_healthy }
 
   app:
+    logging: *logging
     profiles: ["prod"]
     build: { context: ., target: runner }
     restart: unless-stopped
@@ -54,11 +64,13 @@ services:
       BETTER_AUTH_SECRET_FILE: /run/secrets/better_auth_secret
       TMDB_READ_TOKEN_FILE: /run/secrets/tmdb_read_token
       KVKK_CONTACT_EMAIL: ${KVKK_CONTACT_EMAIL:-}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     secrets: [app_db_password, better_auth_secret, tmdb_read_token]
     depends_on:
       migrate: { condition: service_completed_successfully }
 
   caddy:
+    logging: *logging
     profiles: ["prod"]
     image: caddy:2-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0
     restart: unless-stopped

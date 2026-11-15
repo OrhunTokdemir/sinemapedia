@@ -5,6 +5,9 @@ import { z } from "zod";
 import { getAuth } from "@/lib/auth";
 import { requireUser } from "@/lib/session";
 import { isDefaultAvatar } from "@/lib/avatars";
+import { log } from "@/lib/logger";
+
+const actionLog = log.child("action");
 
 const input = z.object({
   name: z.string().trim().min(1).max(80),
@@ -20,7 +23,7 @@ const input = z.object({
 });
 
 export async function updateProfile(_prev, formData) {
-  await requireUser();
+  const me = await requireUser();
   const parsed = input.safeParse({
     name: formData.get("name"),
     bio: formData.get("bio") ?? "",
@@ -32,6 +35,7 @@ export async function updateProfile(_prev, formData) {
     headers: await headers(),
     body: { name, bio: bio || null, image: image || null },
   });
+  actionLog.info("profile.update", { userId: me.id, avatar: image ? (image.startsWith("/avatars/") ? "default" : "custom") : "auto" });
   refresh();
   return { ok: Date.now() };
 }

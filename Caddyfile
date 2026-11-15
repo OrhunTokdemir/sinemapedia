@@ -1,5 +1,23 @@
 # Caddy (built with Go >= 1.24) negotiates the hybrid post-quantum key exchange
 # X25519MLKEM768 by default with browsers that support it; no extra config needed.
+{
+	# Caddy's own/error logs: same privacy filter as the access log below
+	# (error entries for failed upstream requests also contain the request).
+	log default {
+		output stdout
+		format filter {
+			wrap json
+			request>remote_ip ip_mask 24 48
+			request>client_ip ip_mask 24 48
+			request>uri query {
+				replace q REDACTED
+			}
+			request>headers>Cookie delete
+			request>headers>Authorization delete
+		}
+	}
+}
+
 {$SITE_ADDRESS} {
 	encode zstd gzip
 	header {
@@ -10,4 +28,21 @@
 		-Server
 	}
 	reverse_proxy app:3000
+
+	# JSON access log on stdout. Personal data is reduced before it is written:
+	# client IPs masked to /24 (IPv4) and /48 (IPv6), search terms and cookies/auth headers removed.
+	log {
+		output stdout
+		format filter {
+			wrap json
+			request>remote_ip ip_mask 24 48
+			request>client_ip ip_mask 24 48
+			request>uri query {
+				replace q REDACTED
+			}
+			request>headers>Cookie delete
+			request>headers>Authorization delete
+			resp_headers>Set-Cookie delete
+		}
+	}
 }

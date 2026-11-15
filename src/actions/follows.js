@@ -5,6 +5,9 @@ import { z } from "zod";
 import { db } from "@/db";
 import { activities, follows, user as userTable } from "@/db/schema";
 import { requireUser } from "@/lib/session";
+import { log } from "@/lib/logger";
+
+const actionLog = log.child("action");
 
 export async function setFollow(targetId, follow) {
   const me = await requireUser();
@@ -31,5 +34,6 @@ export async function setFollow(targetId, follow) {
       });
     }
   });
+  actionLog.info(follow ? "follow" : "unfollow", { userId: me.id, targetId: target });
   refresh();
 }

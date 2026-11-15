@@ -6,6 +6,9 @@ import { db } from "@/db";
 import { activities, episodeWatches, userMediaStatus } from "@/db/schema";
 import { ensureMedia } from "@/lib/media";
 import { requireUser } from "@/lib/session";
+import { log } from "@/lib/logger";
+
+const actionLog = log.child("action");
 import { getSeason } from "@/lib/tmdb";
 
 const id = z.coerce.number().int().positive();
@@ -39,6 +42,7 @@ export async function setStatus(input) {
       });
     await tx.insert(activities).values({ userId: user.id, type: "status_changed", mediaId: m.id, payload: { status } });
   });
+  actionLog.info("tracking.status", { userId: user.id, tmdbId, type, status });
   refresh();
 }
 
@@ -94,6 +98,7 @@ async function writeEpisodes(user, { tmdbId, season, episodes, watched }) {
 export async function toggleEpisode({ tmdbId, season, episode, watched }) {
   const user = await requireUser();
   await writeEpisodes(user, episodesInput.parse({ tmdbId, season, episodes: [episode], watched }));
+  actionLog.info("episode.watched", { userId: user.id, tmdbId, season, episode, watched });
   refresh();
 }
 
@@ -107,5 +112,6 @@ export async function markSeason({ tmdbId, season, watched }) {
     .map((e) => e.episode_number);
   if (episodes.length === 0) return;
   await writeEpisodes(user, episodesInput.parse({ tmdbId, season, episodes, watched }));
+  actionLog.info("season.watched", { userId: user.id, tmdbId, season, episodes: episodes.length, watched });
   refresh();
 }

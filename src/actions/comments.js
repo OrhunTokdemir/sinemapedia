@@ -6,6 +6,9 @@ import { db } from "@/db";
 import { activities, commentLikes, comments } from "@/db/schema";
 import { ensureMedia } from "@/lib/media";
 import { requireUser } from "@/lib/session";
+import { log } from "@/lib/logger";
+
+const actionLog = log.child("action");
 
 const body = z.string().trim().min(1, "Comment can't be empty").max(5000);
 
@@ -62,6 +65,7 @@ export async function addComment(_prev, formData) {
       payload: { commentId: c.id, season, episode, excerpt: spoiler ? null : text.slice(0, 140) },
     });
   });
+  actionLog.info("comment.create", { userId: user.id, tmdbId, type, season, episode, reply: Boolean(parentId) });
   refresh();
   return { ok: Date.now() };
 }
@@ -73,6 +77,7 @@ export async function editComment({ id, body: text }) {
     .update(comments)
     .set({ body: parsedBody, editedAt: sql`now()` })
     .where(and(eq(comments.id, id), eq(comments.userId, user.id), isNull(comments.deletedAt)));
+  actionLog.info("comment.edit", { userId: user.id, commentId: id });
   refresh();
 }
 
@@ -83,6 +88,7 @@ export async function deleteComment(id) {
     .update(comments)
     .set({ deletedAt: sql`now()` })
     .where(and(eq(comments.id, z.number().int().parse(id)), eq(comments.userId, user.id)));
+  actionLog.info("comment.delete", { userId: user.id, commentId: id });
   refresh();
 }
 
@@ -96,5 +102,6 @@ export async function toggleLike(commentId, liked) {
       .delete(commentLikes)
       .where(and(eq(commentLikes.userId, user.id), eq(commentLikes.commentId, cid)));
   }
+  actionLog.info(liked ? "comment.like" : "comment.unlike", { userId: user.id, commentId: cid });
   refresh();
 }

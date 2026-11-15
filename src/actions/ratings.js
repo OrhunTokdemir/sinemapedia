@@ -6,6 +6,9 @@ import { db } from "@/db";
 import { activities, ratings } from "@/db/schema";
 import { ensureMedia } from "@/lib/media";
 import { requireUser } from "@/lib/session";
+import { log } from "@/lib/logger";
+
+const actionLog = log.child("action");
 
 const input = z.object({
   tmdbId: z.coerce.number().int().positive(),
@@ -50,5 +53,6 @@ export async function rate(raw) {
       payload: { score, season, episode },
     });
   });
+  actionLog.info(score === null ? "rating.clear" : "rating.set", { userId: user.id, tmdbId, type, season, episode, score });
   refresh();
 }
