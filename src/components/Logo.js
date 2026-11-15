@@ -23,11 +23,16 @@ export default function Logo() {
     <Link
       href="/"
       aria-label="Sinemapedia home"
-      className="group inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-brand bg-linear-to-b from-white/15 to-transparent py-1 pr-1.5 pl-1.5 text-brand-fg shadow-sm ring-1 ring-white/15 ring-inset sm:pr-3"
+      className="group inline-flex shrink-0 drop-shadow-[0_2px_3px_rgb(0_0_0/0.25)] motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:-rotate-2 motion-safe:focus-visible:-rotate-2"
     >
-      <LogoMark />
-      <span className="hidden text-lg leading-none font-black tracking-tight sm:inline">
-        Sinema<span className="opacity-80">pedia</span>
+      <span className="ticket inline-flex items-stretch rounded-md bg-brand bg-linear-to-b from-white/15 to-transparent text-brand-fg">
+        <span className="flex items-center py-1.5 pr-2.5 pl-3.5 sm:pr-2">
+          <LogoMark />
+        </span>
+        <span className="my-1 hidden border-l-2 border-dashed border-white/45 sm:block" aria-hidden />
+        <span className="hidden items-center pt-1 pr-4 pl-2.5 font-display text-[26px] leading-none tracking-[0.08em] sm:flex">
+          SINEMAPEDIA
+        </span>
       </span>
     </Link>
   );
