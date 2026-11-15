@@ -69,9 +69,9 @@ export default function AuthForm({ mode }) {
       </button>
       <p className="text-center text-sm text-muted">
         {isSignup ? (
-          <>Already have an account? <Link href="/login" className="text-accent underline">Log in</Link></>
+          <>Already have an account? <Link href="/login" className="text-accent-ink underline">Log in</Link></>
         ) : (
-          <>New here? <Link href="/signup" className="text-accent underline">Create an account</Link></>
+          <>New here? <Link href="/signup" className="text-accent-ink underline">Create an account</Link></>
         )}
       </p>
     </form>

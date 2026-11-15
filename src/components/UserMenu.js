@@ -14,12 +14,12 @@ export default async function UserMenu() {
   }
   return (
     <div className="flex items-center gap-3 text-sm">
-      <Link href="/feed" className="hover:text-accent">Feed</Link>
-      <Link href="/tracking" className="hover:text-accent">Tracking</Link>
-      <Link href={`/u/${user.username}`} className="font-medium hover:text-accent">
+      <Link href="/feed" className="hover:text-accent-ink">Feed</Link>
+      <Link href="/tracking" className="hover:text-accent-ink">Tracking</Link>
+      <Link href={`/u/${user.username}`} className="font-medium hover:text-accent-ink">
         @{user.username}
       </Link>
-      <Link href="/settings" className="text-muted hover:text-accent">Settings</Link>
+      <Link href="/settings" className="text-muted hover:text-accent-ink">Settings</Link>
       <SignOutButton />
     </div>
   );

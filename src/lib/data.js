@@ -47,6 +47,35 @@ export async function getTitleState({ tmdbId, type, season = 0, episode = 0, use
   };
 }
 
+/**
+ * Sinemapedia averages for a batch of TMDB items (one query), keyed "type-tmdbId".
+ * Only titles with at least one whole-title rating are included.
+ */
+export async function getCommunityScores(items, fallbackType) {
+  const keys = items
+    .map((i) => ({ tmdbId: i.id, type: i.media_type ?? fallbackType }))
+    .filter((k) => k.type === "movie" || k.type === "tv");
+  if (keys.length === 0) return new Map();
+
+  const rows = await db
+    .select({ tmdbId: media.tmdbId, type: media.type, avg: avg(ratings.score), n: count() })
+    .from(ratings)
+    .innerJoin(media, eq(media.id, ratings.mediaId))
+    .where(
+      and(
+        eq(ratings.season, 0),
+        eq(ratings.episode, 0),
+        inArray(
+          sql`(${media.type}::text || '-' || ${media.tmdbId})`,
+          keys.map((k) => `${k.type}-${k.tmdbId}`),
+        ),
+      ),
+    )
+    .groupBy(media.tmdbId, media.type);
+
+  return new Map(rows.map((r) => [`${r.type}-${r.tmdbId}`, { avg: Number(r.avg), n: Number(r.n) }]));
+}
+
 /** Comments for a title/episode, oldest first, with author, like count and whether the viewer liked it. */
 export async function getComments({ tmdbId, type, season = 0, episode = 0, viewerId }) {
   const m = await findMedia(tmdbId, type);

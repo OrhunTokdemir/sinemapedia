@@ -1,3 +1,4 @@
+import ClapperIcon from "./ClapperIcon";
 import Image from "next/image";
 import Link from "next/link";
 import { img } from "@/lib/tmdb";
@@ -15,7 +16,7 @@ function describe(a) {
   const p = a.payload ?? {};
   switch (a.type) {
     case "rated":
-      return <>rated {p.season ? `${ep(p)} of ` : ""}<Title a={a} /> <b className="text-star">★ {p.score}</b></>;
+      return <>rated {p.season ? `${ep(p)} of ` : ""}<Title a={a} /> <b className="inline-flex items-center gap-1 text-sp"><ClapperIcon className="h-3.5 w-3.5" /> {p.score}</b></>;
     case "commented":
       return <>commented on {p.season ? `${ep(p)} of ` : ""}<Title a={a} /></>;
     case "watched_episode":
@@ -27,7 +28,7 @@ function describe(a) {
     case "status_changed":
       return <>{STATUS[p.status] ?? "updated"} <Title a={a} /></>;
     case "followed":
-      return <>followed <Link href={`/u/${p.username}`} className="font-medium hover:text-accent">@{p.username}</Link></>;
+      return <>followed <Link href={`/u/${p.username}`} className="font-medium hover:text-accent-ink">@{p.username}</Link></>;
     default:
       return null;
   }
@@ -36,7 +37,7 @@ function describe(a) {
 function Title({ a }) {
   if (!a.media?.tmdbId) return null;
   return (
-    <Link href={`/${a.media.type}/${a.media.tmdbId}`} className="font-medium hover:text-accent">
+    <Link href={`/${a.media.type}/${a.media.tmdbId}`} className="font-medium hover:text-accent-ink">
       {a.media.title}
     </Link>
   );
@@ -60,7 +61,7 @@ export default function ActivityList({ items, showActor = true }) {
           <div className="min-w-0">
             <p>
               {showActor && (
-                <Link href={`/u/${a.actor.username}`} className="font-semibold hover:text-accent">
+                <Link href={`/u/${a.actor.username}`} className="font-semibold hover:text-accent-ink">
                   {a.actor.name}
                 </Link>
               )}{" "}

@@ -44,7 +44,7 @@ export default function TitleHero({ data, type, children }) {
               {directors.map((d, i) => (
                 <span key={d.id}>
                   {i > 0 && ", "}
-                  <Link href={`/person/${d.id}`} className="hover:text-accent">{d.name}</Link>
+                  <Link href={`/person/${d.id}`} className="hover:text-accent-ink">{d.name}</Link>
                 </span>
               ))}
             </p>
@@ -69,7 +69,7 @@ export function CastRow({ cast }) {
                 <Image src={img(p.profile_path, "w185")} alt={p.name} fill sizes="96px" className="object-cover" />
               )}
             </div>
-            <p className="mt-1 line-clamp-1 text-xs font-medium group-hover:text-accent">{p.name}</p>
+            <p className="mt-1 line-clamp-1 text-xs font-medium group-hover:text-accent-ink">{p.name}</p>
             <p className="line-clamp-1 text-xs text-muted">{p.character ?? p.roles?.[0]?.character}</p>
           </Link>
         ))}

@@ -26,7 +26,7 @@ async function FollowListPage({ params }) {
   return (
     <div className="mx-auto max-w-xl">
       <p className="text-sm text-muted">
-        <Link href={`/u/${profile.username}`} className="hover:text-accent">@{profile.username}</Link>
+        <Link href={`/u/${profile.username}`} className="hover:text-accent-ink">@{profile.username}</Link>
       </p>
       <h1 className="mb-4 text-2xl font-bold capitalize">{list}</h1>
       {users.length === 0 ? (

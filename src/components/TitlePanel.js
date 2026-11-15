@@ -3,6 +3,7 @@ import { getTitleState } from "@/lib/data";
 import { getUser } from "@/lib/session";
 import RatingStars from "./RatingStars";
 import StatusSelect from "./StatusSelect";
+import ClapperIcon from "./ClapperIcon";
 
 const compact = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
 
@@ -42,7 +43,7 @@ export default async function TitlePanel({ tmdbId, type, season = 0, episode = 0
           <p className="text-lg font-bold">
             {s.avgScore ? (
               <>
-                <span className="text-star">★</span> {s.avgScore.toFixed(1)}
+                <ClapperIcon className="h-4 w-4 text-sp" /> {s.avgScore.toFixed(1)}
                 <span className="text-sm font-normal text-muted">
                   {" "}/10 · {s.ratingCount} {s.ratingCount === 1 ? "user" : "users"}
                 </span>
@@ -58,7 +59,7 @@ export default async function TitlePanel({ tmdbId, type, season = 0, episode = 0
             <RatingStars tmdbId={tmdbId} type={type} season={season} episode={episode} score={s.myScore} />
           ) : (
             <p className="text-sm text-muted">
-              <Link href="/login" className="text-accent underline">Log in</Link> to rate.
+              <Link href="/login" className="text-accent-ink underline">Log in</Link> to rate.
             </p>
           )}
         </div>

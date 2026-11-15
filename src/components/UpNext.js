@@ -30,12 +30,12 @@ export default async function UpNext({ limit = 12 }) {
               )}
             </div>
             <div className="min-w-0 flex-1 text-sm">
-              <Link href={`/tv/${t.media.tmdbId}`} className="line-clamp-1 font-medium hover:text-accent">
+              <Link href={`/tv/${t.media.tmdbId}`} className="line-clamp-1 font-medium hover:text-accent-ink">
                 {t.media.title}
               </Link>
               <Link
                 href={`/tv/${t.media.tmdbId}/season/${next.season}/episode/${next.episode}`}
-                className="line-clamp-1 text-xs text-muted hover:text-accent"
+                className="line-clamp-1 text-xs text-muted hover:text-accent-ink"
               >
                 S{String(next.season).padStart(2, "0")}E{String(next.episode).padStart(2, "0")} · {next.name}
               </Link>

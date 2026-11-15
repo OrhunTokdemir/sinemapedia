@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ActivityList from "@/components/ActivityList";
+import ClapperIcon from "@/components/ClapperIcon";
 import FollowButton from "@/components/FollowButton";
 import { getFollowStats, getTracking, getUserActivity, getUserByUsername, getUserRatings } from "@/lib/data";
 import { getUser } from "@/lib/session";
@@ -57,11 +58,11 @@ async function ProfilePage({ params }) {
             <p className="text-muted">@{profile.username}</p>
             {profile.bio && <p className="whitespace-pre-line">{profile.bio}</p>}
             <p className="text-sm">
-              <Link href={`/u/${profile.username}/followers`} className="hover:text-accent">
+              <Link href={`/u/${profile.username}/followers`} className="hover:text-accent-ink">
                 <b>{stats.followers}</b> followers
               </Link>{" "}
               ·{" "}
-              <Link href={`/u/${profile.username}/following`} className="hover:text-accent">
+              <Link href={`/u/${profile.username}/following`} className="hover:text-accent-ink">
                 <b>{stats.following}</b> following
               </Link>
             </p>
@@ -98,8 +99,8 @@ function MediaList({ title, items }) {
                     <Image src={img(media.posterPath, "w154")} alt={media.title} fill sizes="80px" className="object-cover" />
                   )}
                   {score && (
-                    <span className="absolute bottom-0 left-0 right-0 bg-black/70 text-center text-xs font-semibold text-star">
-                      ★ {score}
+                    <span className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-1 bg-brand text-xs font-semibold text-brand-fg">
+                      <ClapperIcon className="h-3 w-3" /> {score}
                     </span>
                   )}
                 </div>

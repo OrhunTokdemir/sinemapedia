@@ -36,7 +36,7 @@ function Comment({ c, target, viewerId, depth }) {
           {deleted ? (
             <span className="text-muted">[deleted]</span>
           ) : (
-            <Link href={`/u/${c.author.username}`} className="font-semibold hover:text-accent">
+            <Link href={`/u/${c.author.username}`} className="font-semibold hover:text-accent-ink">
               {c.author.name} <span className="font-normal text-muted">@{c.author.username}</span>
             </Link>
           )}
@@ -79,7 +79,7 @@ function Comment({ c, target, viewerId, depth }) {
           <div className="mt-1 flex gap-3 text-xs text-muted">
             <button
               disabled={!viewerId}
-              className={like.liked ? "text-accent" : "hover:text-foreground"}
+              className={like.liked ? "text-accent-ink" : "hover:text-foreground"}
               onClick={() =>
                 startTransition(async () => {
                   setLike({ liked: !like.liked, likes: like.likes + (like.liked ? -1 : 1) });

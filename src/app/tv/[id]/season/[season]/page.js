@@ -34,7 +34,7 @@ async function SeasonPage({ params }) {
   return (
     <div>
       <p className="text-sm text-muted">
-        <Link href={`/tv/${id}`} className="hover:text-accent">{show.name}</Link>
+        <Link href={`/tv/${id}`} className="hover:text-accent-ink">{show.name}</Link>
       </p>
       <h1 className="mb-1 text-2xl font-bold">{season.name}</h1>
       {season.overview && <p className="mb-4 max-w-3xl text-muted">{season.overview}</p>}
@@ -82,7 +82,7 @@ function EpisodeList({ id, season, watched }) {
               <div className="min-w-0 flex-1">
                 <Link
                   href={`/tv/${id}/season/${season.season_number}/episode/${e.episode_number}`}
-                  className="font-medium hover:text-accent"
+                  className="font-medium hover:text-accent-ink"
                 >
                   {e.episode_number}. {e.name}
                 </Link>

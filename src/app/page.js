@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { PosterGrid } from "@/components/PosterCard";
+import { PosterGrid, RatingLegend } from "@/components/PosterCard";
 import UpNext from "@/components/UpNext";
 import Loading from "./loading";
 import { getPopular, getTrending } from "@/lib/tmdb";
@@ -26,6 +26,7 @@ async function Discover() {
     <>
       <section>
         <h2 className="h-section">Trending this week</h2>
+        <RatingLegend />
         <PosterGrid items={trending.filter((t) => t.media_type !== "person").slice(0, 18)} eager />
       </section>
       <section>

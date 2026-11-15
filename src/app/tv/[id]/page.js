@@ -58,7 +58,7 @@ async function ShowPage({ params }) {
                     </div>
                   )}
                 </div>
-                <p className="mt-1.5 line-clamp-1 text-sm font-medium group-hover:text-accent">{s.name}</p>
+                <p className="mt-1.5 line-clamp-1 text-sm font-medium group-hover:text-accent-ink">{s.name}</p>
                 <p className="text-xs text-muted">
                   {s.episode_count} episodes{s.air_date && ` · ${s.air_date.slice(0, 4)}`}
                 </p>

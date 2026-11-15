@@ -62,7 +62,7 @@ async function TrackingPage() {
                     )}
                   </div>
                   <div className="min-w-0 flex-1 space-y-1.5">
-                    <Link href={`/${r.media.type}/${r.media.tmdbId}`} className="line-clamp-1 font-medium hover:text-accent">
+                    <Link href={`/${r.media.type}/${r.media.tmdbId}`} className="line-clamp-1 font-medium hover:text-accent-ink">
                       {r.media.title} {r.media.year && <span className="text-muted">({r.media.year})</span>}
                     </Link>
                     {r.progress && (

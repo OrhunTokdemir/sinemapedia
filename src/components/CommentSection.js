@@ -28,7 +28,7 @@ export default async function CommentSection({ tmdbId, type, season = 0, episode
         <CommentForm target={target} />
       ) : (
         <p className="card p-4 text-sm text-muted">
-          <Link href="/login" className="text-accent underline">Log in</Link> to join the discussion.
+          <Link href="/login" className="text-accent-ink underline">Log in</Link> to join the discussion.
         </p>
       )}
       <CommentThread comments={tree} target={target} viewerId={viewer?.id ?? null} />

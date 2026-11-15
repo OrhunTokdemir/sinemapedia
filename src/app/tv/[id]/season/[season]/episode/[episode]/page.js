@@ -39,8 +39,8 @@ async function EpisodePage({ params }) {
   return (
     <div>
       <p className="text-sm text-muted">
-        <Link href={`/tv/${id}`} className="hover:text-accent">{show.name}</Link> ·{" "}
-        <Link href={`/tv/${id}/season/${season}`} className="hover:text-accent">Season {season}</Link>
+        <Link href={`/tv/${id}`} className="hover:text-accent-ink">{show.name}</Link> ·{" "}
+        <Link href={`/tv/${id}/season/${season}`} className="hover:text-accent-ink">Season {season}</Link>
       </p>
       <div className="mt-2 flex flex-col gap-6 md:flex-row">
         {ep.still_path && (

@@ -1,7 +1,9 @@
 "use client";
 import { useOptimistic, useState, useTransition } from "react";
 import { rate } from "@/actions/ratings";
+import ClapperIcon from "./ClapperIcon";
 
+/** Sinemapedia rating input (1–10). Uses the clapperboard icon; ★ is reserved for TMDB scores. */
 export default function RatingStars({ tmdbId, type, season = 0, episode = 0, score }) {
   const [optimistic, setOptimistic] = useOptimistic(score);
   const [hover, setHover] = useState(null);
@@ -28,9 +30,9 @@ export default function RatingStars({ tmdbId, type, season = 0, episode = 0, sco
             aria-label={`${v} out of 10`}
             onMouseEnter={() => setHover(v)}
             onClick={() => submit(v)}
-            className={`px-0.5 text-xl leading-none ${v <= shown ? "text-star" : "text-border"}`}
+            className={`p-0.5 leading-none ${v <= shown ? "text-sp" : "text-border"}`}
           >
-            ★
+            <ClapperIcon className="h-5 w-5" />
           </button>
         ))}
       </div>

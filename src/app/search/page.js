@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Loading from "@/app/loading";
-import { PosterGrid } from "@/components/PosterCard";
+import { PosterGrid, RatingLegend } from "@/components/PosterCard";
 import { search } from "@/lib/tmdb";
 
 export const metadata = { title: "Search" };
@@ -25,6 +25,7 @@ async function SearchPage({ searchParams }) {
         {query ? <>Results for &ldquo;{query}&rdquo;</> : "Search"}
       </h1>
       {query && results.length === 0 && <p className="text-muted">Nothing found.</p>}
+      {results.length > 0 && <RatingLegend />}
       <PosterGrid items={results} eager />
     </div>
   );
