@@ -96,7 +96,6 @@ body::before {
 /* The center column (header + main + footer) with its own background. */
 @utility site-column {
   @apply border-x border-border bg-background;
-  min-height: 100dvh;
   box-shadow: 0 0 40px var(--column-shadow);
 }
 

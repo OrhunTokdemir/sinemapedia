@@ -32,23 +32,23 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="flex min-h-full flex-col font-sans">
-        <div className="site-column mx-auto flex w-full max-w-6xl flex-1 flex-col">
-          <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
-            <nav className="flex items-center gap-4 px-4 py-3">
-              <Link href="/" className="rounded bg-brand px-2 py-0.5 text-lg font-black text-brand-fg">
-                Sinemapedia
-              </Link>
-              <div className="flex-1">
-                <Suspense fallback={<div className="input h-9" />}>
-                  <SearchBox />
-                </Suspense>
-              </div>
-              <ThemeToggle />
-              <Suspense fallback={<div className="h-8 w-24" />}>
-                <UserMenu />
+        <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
+          <nav className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
+            <Link href="/" className="rounded bg-brand px-2 py-0.5 text-lg font-black text-brand-fg">
+              Sinemapedia
+            </Link>
+            <div className="flex-1">
+              <Suspense fallback={<div className="input h-9" />}>
+                <SearchBox />
               </Suspense>
-            </nav>
-          </header>
+            </div>
+            <ThemeToggle />
+            <Suspense fallback={<div className="h-8 w-24" />}>
+              <UserMenu />
+            </Suspense>
+          </nav>
+        </header>
+        <div className="site-column mx-auto flex w-full max-w-6xl flex-1 flex-col">
           <main className="w-full flex-1 px-4 py-6">{children}</main>
           <footer className="space-y-2 border-t border-border px-4 py-6 text-center text-xs text-muted">
             <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
