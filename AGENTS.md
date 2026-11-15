@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Environment files
+
+Never read, open, print, or search the contents of `.env` files or any files matching `*.env` (e.g. `production.env`, `local.env`). They contain secrets. If configuration values are needed, ask the user instead.

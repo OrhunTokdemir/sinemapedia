@@ -1,0 +1,89 @@
+# Dev:  docker compose up -d db        (then `npm run db:migrate && npm run dev`)
+# Prod: docker compose --profile prod up -d --build
+#
+# Secrets are read from ./secrets/*.txt (gitignored, chmod 600) and mounted as files
+# under /run/secrets, so they never appear in the environment or `docker inspect`.
+name: sinemapedia
+
+x-db-conn: &db-conn
+  DB_HOST: db
+  DB_PORT: "5432"
+  DB_NAME: ${POSTGRES_DB:-sinemapedia}
+  DB_USER: ${APP_DB_USER:-sinemapedia}
+  DB_PASSWORD_FILE: /run/secrets/app_db_password
+
+services:
+  db:
+    image: postgres:17-alpine@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sinemapedia}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      APP_DB_USER: ${APP_DB_USER:-sinemapedia}
+      APP_DB_PASSWORD_FILE: /run/secrets/app_db_password
+    secrets: [postgres_password, app_db_password]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init-app-role.sh:/docker-entrypoint-initdb.d/10-init-app-role.sh:ro
+    # Bound to localhost only: reachable from `npm run dev`, never from the network.
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    profiles: ["prod"]
+    build: { context: ., target: migrate }
+    environment:
+      <<: *db-conn
+    secrets: [app_db_password]
+    depends_on:
+      db: { condition: service_healthy }
+
+  app:
+    profiles: ["prod"]
+    build: { context: ., target: runner }
+    restart: unless-stopped
+    environment:
+      <<: *db-conn
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-https://localhost}
+      BETTER_AUTH_SECRET_FILE: /run/secrets/better_auth_secret
+      TMDB_READ_TOKEN_FILE: /run/secrets/tmdb_read_token
+    secrets: [app_db_password, better_auth_secret, tmdb_read_token]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+
+  caddy:
+    profiles: ["prod"]
+    image: caddy:2-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0
+    restart: unless-stopped
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [app]
+
+secrets:
+  postgres_password:
+    file: ./secrets/postgres_password.txt
+  app_db_password:
+    file: ./secrets/app_db_password.txt
+  better_auth_secret:
+    file: ./secrets/better_auth_secret.txt
+  tmdb_read_token:
+    file: ./secrets/tmdb_read_token.txt
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,13 @@
+# Caddy (built with Go >= 1.24) negotiates the hybrid post-quantum key exchange
+# X25519MLKEM768 by default with browsers that support it; no extra config needed.
+{$SITE_ADDRESS} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		-Server
+	}
+	reverse_proxy app:3000
+}
